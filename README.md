@@ -4,7 +4,7 @@
 
 ## Features
 
-- **Ionic Framework**: Cross-platform mobile development with a native feel using Angular.
+- **Ionic Framework**: Cross-platform mobile development with a native feel using React.
 - **Redux**: State management for handling the app's data flow.
 - **Chart.js**: Visualization of data using interactive charts.
 - **News API**: Fetches the latest news articles in real-time.
