@@ -1,0 +1,23 @@
+.category-segment {
+    margin: 10px 15px;
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  
+  .category-segment .ion-segment-button {
+    padding: 8px 10px;
+    font-size: 0.9em;
+  }
+  
+  .category-segment .ion-segment-button ion-label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .category-segment .ion-segment-button.ion-activated {
+    background-color: #007aff;
+    color: white;
+    border-radius: 5px;
+  }
+  
