@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">news-mobile-app</string>
-    <string name="title_activity_main">news-mobile-app</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">newsapp</string>
+    <string name="title_activity_main">newsapp</string>
+    <string name="package_name">com.talhatelli.news</string>
+    <string name="custom_url_scheme">com.talhatelli.news</string>
 </resources>

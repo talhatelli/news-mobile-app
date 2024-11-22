@@ -13,7 +13,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import { newspaperOutline, statsChartOutline } from "ionicons/icons";
 import News from "./pages/News";
 import Chart from "./pages/Chart";
-
+import { PushNotifications } from '@capacitor/push-notifications';
+import { useEffect } from 'react';
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -46,31 +47,74 @@ import "./theme/variables.css";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/News">
-            <News />
-          </Route>
-          <Route exact path="/Chart">
-            <Chart />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="News" href="/News">
-            <IonIcon aria-hidden="true" icon={newspaperOutline} />
-            <IonLabel>News</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Chart" href="/Chart">
-            <IonIcon aria-hidden="true" icon={statsChartOutline} />
-            <IonLabel>Chart</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+
+  useEffect(() => {
+    // Request permission to use push notifications
+    // iOS will prompt user and return if they granted permission or not
+    // Android will just grant without prompting
+    PushNotifications.requestPermissions().then(result => {
+      if (result.receive === 'granted') {
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register();
+      }
+    });
+
+    // On success, we should be able to receive notifications
+    PushNotifications.addListener('registration',
+      (token) => {
+        console.log('Push registration success, token: ' + token.value);
+      }
+    );
+
+    // Some issue with our setup and push will not work
+    PushNotifications.addListener('registrationError',
+      (error) => {
+        console.log('Error on registration: ' + JSON.stringify(error));
+      }
+    );
+
+    // Show us the notification payload if the app is open on our device
+    PushNotifications.addListener('pushNotificationReceived',
+      (notification) => {
+        console.log('Push received: ' + JSON.stringify(notification));
+      }
+    );
+
+    // Method called when tapping on a notification
+    PushNotifications.addListener('pushNotificationActionPerformed',
+      (notification) => {
+        console.log('Push action performed: ' + JSON.stringify(notification));
+      }
+    );
+  }, []);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/News">
+              <News />
+            </Route>
+            <Route exact path="/Chart">
+              <Chart />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="News" href="/News">
+              <IonIcon aria-hidden="true" icon={newspaperOutline} />
+              <IonLabel>News</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="Chart" href="/Chart">
+              <IonIcon aria-hidden="true" icon={statsChartOutline} />
+              <IonLabel>Chart</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;
